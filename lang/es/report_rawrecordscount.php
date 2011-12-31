@@ -25,6 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['count'] = 'Cuenta';
 $string['pluginname'] = 'Cuenta de registros de log';
 $string['rawrecordsreportcount'] = 'Informe de cuenta de registros de log';
 $string['rawrecordsreportfilename'] = 'contar_registros_log';

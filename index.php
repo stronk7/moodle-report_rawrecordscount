@@ -36,7 +36,7 @@ $out = optional_param('out', 'html', PARAM_TAG);   // output (html, xls, ods, tx
 
 $course = $DB->get_record('course', array('id' => $id), '*', MUST_EXIST);
 
-$PAGE->set_url('/course/report/rawrecordscount/index.php', array('id' => $id, 'out' => $out));
+$PAGE->set_url('/report/rawrecordscount/index.php', array('id' => $id, 'out' => $out));
 $PAGE->set_pagelayout('report');
 
 require_login($course);
@@ -52,9 +52,12 @@ if (!$currentgroup) {      // To make some other functions work better later
 
 add_to_log($course->id, 'course', 'report rawrecordscount', "report/rawrecordscount/index.php?id=$course->id", $course->id);
 
-$strname = get_string('pluginname', 'report_rawrecordscount');
-$strfilename = get_string('rawrecordsreportfilename', 'report_rawrecordscount');
 $strreports = get_string('reports');
+$strusers = get_string('users');
+$strcount = get_string('count', 'report_rawrecordscount');
+$strname = get_string('pluginname', 'report_rawrecordscount');
+$strnameheading = get_string('rawrecordsreportcount', 'report_rawrecordscount');
+$strfilename = get_string('rawrecordsreportfilename', 'report_rawrecordscount');
 
 // Calculate recordset (common for all outputs)
 
@@ -73,14 +76,12 @@ list ($msql, $mparams) = $DB->get_in_or_equal($havemanage, SQL_PARAMS_NAMED, 'ma
 list($esql, $eparams) = get_enrolled_sql($context, '', $currentgroup);
 
 $ufields = user_picture::fields('u');
-$sql = "SELECT $ufields , count(*) as count
+$sql = "SELECT $ufields , count(l.id) as count
           FROM {user} u
           JOIN ($esql) je ON je.id = u.id
-          JOIN {log} l on l.userid = u.id
-         WHERE u.deleted = 0
-           AND u.id $msql
-           AND l.course = :course
-      GROUP BY " . user_picture::fields() . "
+     LEFT JOIN {log} l on l.userid = u.id AND l.course = :course
+         WHERE u.id $msql
+      GROUP BY " . user_picture::fields('u') . "
       ORDER BY u.lastname, u.firstname";
 
 $params = $eparams + $mparams + array('course' => $course->id);;
@@ -94,8 +95,8 @@ if ($out == 'xls') { // XLS output
     $workbook->send($strfilename . '.xls');
     $worksheet =& $workbook->add_worksheet($strfilename);
 
-    $worksheet->write(0, 0, get_string('users'));
-    $worksheet->write(0, 1, get_string('total'));
+    $worksheet->write(0, 0, $strusers);
+    $worksheet->write(0, 1, $strcount);
 
     $row = 1;
 
@@ -120,8 +121,8 @@ if ($out == 'xls') { // XLS output
     $workbook->send($strfilename . '.ods');
     $worksheet =& $workbook->add_worksheet($strfilename);
 
-    $worksheet->write(0, 0, get_string('users'));
-    $worksheet->write(0, 1, get_string('total'));
+    $worksheet->write(0, 0, $strusers);
+    $worksheet->write(0, 1, $strcount);
 
     $row = 1;
 
@@ -149,7 +150,7 @@ if ($out == 'xls') { // XLS output
     header("Cache-Control: must-revalidate,post-check=0,pre-check=0");
     header("Pragma: public");
 
-    echo get_string('users') . "\t" . get_string('total') . "\n";
+    echo $strusers . "\t" . $strcount . "\n";
 
     $row = 1;
 
@@ -172,7 +173,7 @@ if ($out == 'xls') { // XLS output
     $PAGE->set_title($course->shortname .': '. $strname);
     $PAGE->set_heading($course->fullname);
     echo $OUTPUT->header();
-    echo $OUTPUT->heading(format_string($course->fullname));
+    echo $OUTPUT->heading($strnameheading);
 
     // Print groups selector
     groups_print_course_menu($course, 'index.php?id=' . $course->id);
@@ -189,7 +190,7 @@ if ($out == 'xls') { // XLS output
 
     $table = new html_table();
     $table->width = '90%';
-    $table->head = array('&nbsp;', get_string('users'), get_string('total'));
+    $table->head = array('&nbsp;', $strusers, $strcount);
     $table->align = array('center', 'left', 'center');
     $table->size = array('20%', '60%', '20%');
 
