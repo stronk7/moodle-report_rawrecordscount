@@ -20,8 +20,7 @@
  * One simple course report to show the number of log entries per
  * student in a given course. Downloadable in various formats.
  *
- * @package    report
- * @subpackage rawrecordscount
+ * @package    report_rawrecordscount
  * @copyright  2009 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -31,8 +30,8 @@ require_once($CFG->libdir.'/tablelib.php');
 require_once($CFG->libdir.'/excellib.class.php');
 require_once($CFG->libdir.'/odslib.class.php');
 
-$id  = required_param('id', PARAM_INT); // course id.
-$out = optional_param('out', 'html', PARAM_TAG);   // output (html, xls, ods, txt) defaults to html
+$id  = required_param('id', PARAM_INT); // Course id.
+$out = optional_param('out', 'html', PARAM_TAG);   // Output (html, xls, ods, txt) defaults to html.
 
 $course = $DB->get_record('course', array('id' => $id), '*', MUST_EXIST);
 
@@ -44,10 +43,10 @@ $context = get_context_instance(CONTEXT_COURSE, $course->id);
 require_capability('report/rawrecordscount:view', $context);
 
 // Group calculations
-$groupmode    = groups_get_course_groupmode($course);   // Groups are being used
-$currentgroup = groups_get_course_group($course, true); // Fetches current selected group
-if (!$currentgroup) {      // To make some other functions work better later
-    $currentgroup  = NULL;
+$groupmode    = groups_get_course_groupmode($course);   // Groups are being used.
+$currentgroup = groups_get_course_group($course, true); // Fetches current selected group.
+if (!$currentgroup) {      // To make some other functions work better later.
+    $currentgroup = null;
 }
 
 add_to_log($course->id, 'course', 'report rawrecordscount', "report/rawrecordscount/index.php?id=$course->id", $course->id);
@@ -59,10 +58,10 @@ $strname = get_string('pluginname', 'report_rawrecordscount');
 $strnameheading = get_string('rawrecordsreportcount', 'report_rawrecordscount');
 $strfilename = get_string('rawrecordsreportfilename', 'report_rawrecordscount');
 
-// Calculate recordset (common for all outputs)
+// Calculate recordset (common for all outputs).
 
 // Get the list of all users having moodle/course:manageactivities capability
-// in order to take out them later from the report (to try to get "students" only)
+// in order to take out them later from the report (to try to get "students" only).
 if ($havemanage = get_users_by_capability($context, 'moodle/course:manageactivities', 'u.id')) {
     $havemanage = array_keys($havemanage);
 }
@@ -88,9 +87,9 @@ $params = $eparams + $mparams + array('course' => $course->id);;
 
 $rs = $DB->get_recordset_sql($sql, $params);
 
-// Content output (different based on $out)
+// Content output (different based on $out).
 
-if ($out == 'xls') { // XLS output
+if ($out == 'xls') { // XLS output.
     $workbook = new MoodleExcelWorkbook('-');
     $workbook->send($strfilename . '.xls');
     $worksheet =& $workbook->add_worksheet($strfilename);
@@ -116,7 +115,7 @@ if ($out == 'xls') { // XLS output
     }
     $workbook->close();
 
-} else if ($out == 'ods') { // ODS output
+} else if ($out == 'ods') { // ODS output.
     $workbook = new MoodleODSWorkbook('-');
     $workbook->send($strfilename . '.ods');
     $worksheet =& $workbook->add_worksheet($strfilename);
@@ -143,7 +142,7 @@ if ($out == 'xls') { // XLS output
     }
     $workbook->close();
 
-} else if ($out == 'txt') { // CSV output
+} else if ($out == 'txt') { // CSV output.
     header("Content-Type: application/download\n");
     header("Content-Disposition: attachment; filename={$strfilename}.txt");
     header("Expires: 0");
@@ -169,16 +168,16 @@ if ($out == 'xls') { // XLS output
 
     }
 
-} else { // HTML output
+} else { // HTML output.
     $PAGE->set_title($course->shortname .': '. $strname);
     $PAGE->set_heading($course->fullname);
     echo $OUTPUT->header();
     echo $OUTPUT->heading($strnameheading);
 
-    // Print groups selector
+    // Print groups selector.
     groups_print_course_menu($course, 'index.php?id=' . $course->id);
 
-    // Print download selector
+    // Print download selector.
     $options = array('xls' => get_string('downloadexcel'),
                      'ods' => get_string('downloadods'),
                      'txt' => get_string('downloadtext'));
@@ -205,5 +204,5 @@ if ($out == 'xls') { // XLS output
     echo $OUTPUT->footer();
 }
 
-// Close the recordset (common for all outputs)
+// Close the recordset (common for all outputs).
 $rs->close();

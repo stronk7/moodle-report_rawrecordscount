@@ -17,14 +17,15 @@
 /**
  * Version file for rawrecordscount report
  *
- * @package    report
- * @subpackage rawrecordscount
+ * @package    report_rawrecordscount
  * @copyright  2009 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version  = 2011113000;        // The current plugin version (Date: YYYYMMDDXX)
-$plugin->requires = 2011112900;        // Requires this Moodle version (v2.2beta+ release)
-$plugin->component = 'report_rawrecordscount'; // Full name of the plugin (used for diagnostics)
+$plugin->version = 2012092300; // The current plugin version (Date: YYYYMMDDXX).
+$plugin->requires = 2011120500; // Requires this Moodle version (v2.2 release).
+$plugin->component = 'report_rawrecordscount'; // Full name of the plugin.
+$plugin->maturity = MATURITY_STABLE; // Maturity of the plugin.
+$plugin->release = '2.2.0'; // Release name of the plugin.

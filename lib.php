@@ -20,8 +20,7 @@
  * All the functions and callbacks required in the report plugin
  * to interact with different parts of the core
  *
- * @package    report
- * @subpackage rawrecordscount
+ * @package    report_rawrecordscount
  * @copyright  2011 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -38,6 +37,7 @@ defined('MOODLE_INTERNAL') || die();
 function report_rawrecordscount_extend_navigation_course($navigation, $course, $context) {
     if (has_capability('report/rawrecordscount:view', $context)) {
         $url = new moodle_url('/report/rawrecordscount/index.php', array('id' => $course->id));
-        $navigation->add(get_string('pluginname', 'report_rawrecordscount'), $url, navigation_node::TYPE_SETTING, null, null, new pix_icon('icon', '', 'report_rawrecordscount'));
+        $navigation->add(get_string('pluginname', 'report_rawrecordscount'), $url,
+            navigation_node::TYPE_SETTING, null, null, new pix_icon('icon', '', 'report_rawrecordscount'));
     }
 }

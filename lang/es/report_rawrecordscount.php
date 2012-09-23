@@ -17,8 +17,7 @@
 /**
  * Lang strings for rawrecordscount report (es language)
  *
- * @package    report
- * @subpackage rawrecordscount
+ * @package    report_rawrecordscount
  * @copyright  2009 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
