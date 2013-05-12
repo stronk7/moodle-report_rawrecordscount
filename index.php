@@ -92,7 +92,7 @@ $rs = $DB->get_recordset_sql($sql, $params);
 if ($out == 'xls') { // XLS output.
     $workbook = new MoodleExcelWorkbook('-');
     $workbook->send($strfilename . '.xls');
-    $worksheet =& $workbook->add_worksheet($strfilename);
+    $worksheet = $workbook->add_worksheet($strfilename);
 
     $worksheet->write(0, 0, $strusers);
     $worksheet->write(0, 1, $strcount);
@@ -118,7 +118,7 @@ if ($out == 'xls') { // XLS output.
 } else if ($out == 'ods') { // ODS output.
     $workbook = new MoodleODSWorkbook('-');
     $workbook->send($strfilename . '.ods');
-    $worksheet =& $workbook->add_worksheet($strfilename);
+    $worksheet = $workbook->add_worksheet($strfilename);
 
     $worksheet->write(0, 0, $strusers);
     $worksheet->write(0, 1, $strcount);

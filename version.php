@@ -24,8 +24,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2012092300; // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires = 2011120500; // Requires this Moodle version (v2.2 release).
+$plugin->version = 2013051200; // The current plugin version (Date: YYYYMMDDXX).
+$plugin->requires = 2012062500; // Requires this Moodle version (v2.3 release).
 $plugin->component = 'report_rawrecordscount'; // Full name of the plugin.
 $plugin->maturity = MATURITY_STABLE; // Maturity of the plugin.
-$plugin->release = '2.2.0'; // Release name of the plugin.
+$plugin->release = '2.3.0'; // Release name of the plugin.
